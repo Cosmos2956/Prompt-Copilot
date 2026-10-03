@@ -1,0 +1,16 @@
+node_modules/
+.pnpm-store/
+dist/
+.tools/
+src-tauri/target/
+src-tauri/gen/schemas/
+.DS_Store
+.env.local
+.env.*.local
+.env
+.env.*
+!.env.example
+
+# Internal local handoff notes and release staging
+PROJECT_HANDOFF.md
+release-assets/

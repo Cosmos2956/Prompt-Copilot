@@ -1,0 +1,28 @@
+[package]
+name = "prompt-copilot"
+version = "1.0.0"
+description = "A personal prompt editing utility"
+authors = ["Prompt Copilot"]
+edition = "2021"
+
+[lib]
+name = "prompt_copilot_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "=2.6.1", features = [] }
+
+[dependencies]
+tauri = { version = "=2.11.1", features = ["tray-icon"] }
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-single-instance = "2"
+tauri-plugin-autostart = "2"
+reqwest = { version = "0.13", default-features = false, features = ["json", "native-tls", "system-proxy"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+zeroize = "1"
+
+[target.'cfg(windows)'.dependencies]
+# Already used by the autostart plugin; quote its Windows Run path explicitly.
+winreg = "0.10"
+windows = { version = "0.61.3", features = ["Win32_Foundation", "Win32_Security_Credentials", "Win32_Storage_Packaging_Appx", "Win32_System_Com", "Win32_System_DataExchange", "Win32_System_Memory", "Win32_System_Ole", "Win32_System_Threading", "Win32_UI_Accessibility", "Win32_UI_Input_KeyboardAndMouse", "Win32_UI_WindowsAndMessaging"] }
