@@ -13,7 +13,7 @@ Windows x64 release, with package version 1.0.0.
 
 ## Installation
 
-Download `Prompt Copilot_1.0.0_x64-setup.exe` and run it. Quit any existing Prompt Copilot instance through the tray menu before updating. The installer targets the current Windows user and installs WebView2 if missing.
+Download `Prompt.Copilot_1.0.0_x64-setup.exe` and run it. Quit any existing Prompt Copilot instance through the tray menu before updating. The installer targets the current Windows user and installs WebView2 if missing.
 
 `prompt-copilot-1.00.exe` is the standalone alternative. It also requires WebView2. `SHA256SUMS.txt` contains checksums for both executables.
 

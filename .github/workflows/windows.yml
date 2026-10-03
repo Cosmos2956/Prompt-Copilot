@@ -69,6 +69,7 @@ jobs:
           Copy-Item 'src-tauri/target/installer/release/bundle/nsis/*-setup.exe' release-assets/
           $config = Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json
           Copy-Item "src-tauri/target/installer/release/$($config.mainBinaryName).exe" release-assets/
+          Get-ChildItem release-assets/*.exe | Rename-Item -NewName { $_.Name.Replace(' ', '.') }
           Get-ChildItem release-assets/*.exe | Sort-Object Name | ForEach-Object {
             $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
             "$hash  $($_.Name)"

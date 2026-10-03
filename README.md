@@ -18,7 +18,7 @@ The app stores settings locally, but rewriting is an online operation. It is not
 
 ## Installation
 
-Download the installer from [GitHub Releases](https://github.com/Cosmos2956/Prompt-Copilot/releases/latest), then run `Prompt Copilot_1.0.0_x64-setup.exe`, then launch Prompt Copilot from the Start Menu.
+Download the installer from [GitHub Releases](https://github.com/Cosmos2956/Prompt-Copilot/releases/latest), then run `Prompt.Copilot_1.0.0_x64-setup.exe`, then launch Prompt Copilot from the Start Menu.
 
 The installer installs for your Windows account, with `%LOCALAPPDATA%\Prompt Copilot` as the default folder. This personal build is unsigned.
 
@@ -207,5 +207,5 @@ GitHub Actions runs formatting, TypeScript checks, frontend tests, Rust checks a
 To verify a downloaded executable in PowerShell, compare its hash with `SHA256SUMS.txt` from the same release:
 
 ```powershell
-Get-FileHash './Prompt Copilot_1.0.0_x64-setup.exe' -Algorithm SHA256
+Get-FileHash './Prompt.Copilot_1.0.0_x64-setup.exe' -Algorithm SHA256
 ```

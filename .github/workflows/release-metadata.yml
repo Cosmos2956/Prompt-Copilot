@@ -1,0 +1,45 @@
+name: Verify release downloads
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/release-metadata.yml
+      - RELEASE_NOTES.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify published files and refresh checksum filenames
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+        run: |
+          $cargo = Get-Content src-tauri/Cargo.toml -Raw
+          $version = [regex]::Match($cargo, '(?m)^version = "([^"]+)"').Groups[1].Value
+          $tag = "v$version"
+          gh release download $tag --pattern '*.exe' --dir verified-assets
+          if ($LASTEXITCODE -ne 0) { throw 'Could not download published executables.' }
+          $files = Get-ChildItem verified-assets/*.exe | Sort-Object Name
+          if ($files.Count -ne 2) { throw 'Expected the installer and standalone executable.' }
+          $config = Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json
+          $portable = $files | Where-Object Name -eq ($config.mainBinaryName + '.exe')
+          if (!$portable -or $portable.VersionInfo.ProductVersion -ne $version) { throw 'Published executable version mismatch.' }
+          $files | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$hash  $($_.Name)"
+          } | Set-Content verified-assets/SHA256SUMS.txt -Encoding ascii
+          gh release upload $tag verified-assets/SHA256SUMS.txt --clobber
+          if ($LASTEXITCODE -ne 0) { throw 'Checksum update failed.' }
+          gh release edit $tag --notes-file RELEASE_NOTES.md
+          if ($LASTEXITCODE -ne 0) { throw 'Release notes update failed.' }
+          Get-Content verified-assets/SHA256SUMS.txt
